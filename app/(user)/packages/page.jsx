@@ -18,7 +18,7 @@ export default function PackagesPage() {
             destination: 'Andaman & Nicobar Island',
             duration: '7 Days',
             groupSize: '4-6 people',
-            price: '$1,299',
+            price: '₹1,299',
             rating: 4.8,
             reviews: 234,
             description:
@@ -32,7 +32,7 @@ export default function PackagesPage() {
             destination: 'Kerela',
             duration: '10 Days',
             groupSize: '6-8 people',
-            price: '$1,899',
+            price: '₹1,899',
             rating: 4.9,
             reviews: 456,
             description:
@@ -46,7 +46,7 @@ export default function PackagesPage() {
             destination: 'Himachal Pradesh',
             duration: '8 Days',
             groupSize: '3-5 people',
-            price: '$1,599',
+            price: '₹1,599',
             rating: 4.7,
             reviews: 189,
             description:
@@ -60,7 +60,7 @@ export default function PackagesPage() {
             destination: 'Goa, India',
             duration: '5 Days',
             groupSize: '2-4 people',
-            price: '$899',
+            price: '₹899',
             rating: 4.6,
             reviews: 312,
             description:
@@ -74,7 +74,7 @@ export default function PackagesPage() {
             destination: 'Rajasthan',
             duration: '9 Days',
             groupSize: '4-7 people',
-            price: '$1,699',
+            price: '₹1,699',
             rating: 4.9,
             reviews: 523,
             description:
@@ -88,7 +88,7 @@ export default function PackagesPage() {
             destination: 'Rajasthan',
             duration: '10 Days',
             groupSize: '6-10 people',
-            price: '$2,299',
+            price: '₹2,299',
             rating: 4.8,
             reviews: 267,
             description:
