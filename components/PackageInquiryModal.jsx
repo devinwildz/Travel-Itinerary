@@ -16,6 +16,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState(null);
 
     const {
         register,
@@ -28,25 +29,50 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
 
     const onSubmit = async (data) => {
         setIsSubmitting(true);
-
-        console.log("Form Data", data);
+        setError(null);
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        setSubmitted(true);
+        try {
+            const response = await fetch('/api/send-inquiry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...data,
+                    packageName,
+                }),
+            });
 
-        setTimeout(() => {
-            reset();
-            setSubmitted(false);
-            onOpenChange(false);
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to send inquiry');
+            }
+
+            console.log('✅ Email sent:', result);
+            setSubmitted(true);
+
+            setTimeout(() => {
+                reset();
+                setSubmitted(false);
+                onOpenChange(false);
+            }, 2000);
+
+        } catch (err) {
+            console.error('❌ Error:', err);
+            setError(err.message || 'Failed to send inquiry');
+        } finally {
             setIsSubmitting(false);
-        }, 1500);
+        }
     };
 
     const handleClose = () => {
         if (!isSubmitting) {
             reset();
             setSubmitted(false);
+            setError(null);
             onOpenChange(false);
         }
     };
