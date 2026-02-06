@@ -28,7 +28,7 @@ export default function TripCard({ trip, onDelete }) {
 
     const handleCardClick = () => {
         // Clean URL with dynamic route
-        router.push(`/trip-planner/${trip.id}`);
+        router.push(`/trip/${trip.id}`);
     };
 
     const createdDate = formatDate(trip.created_at);

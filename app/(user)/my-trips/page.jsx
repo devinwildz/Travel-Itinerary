@@ -116,12 +116,3 @@ export default function MyTripsContent() {
   );
 }
 
-{/* Future: Trip Details Modal */ }
-{/* {selectedTrip && (
-          <TripDetailsModal
-            trip={selectedTrip}
-            open={isDetailsOpen}
-            onOpenChange={setIsDetailsOpen}
-            onDelete={handleDeleteTrip}
-          />
-        )} */}

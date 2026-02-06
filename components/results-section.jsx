@@ -73,16 +73,16 @@ export default function ResultsSection({ data }) {
           </h1>
 
           <div className="flex justify-center flex-wrap gap-4">
-            <Badge variant="outline" className="px-4 py-2 text-base">
-              <MapPin size={18} className="mr-2" />
+            <Badge variant="outline" className="px-4 py-2 flex gap-2 text-base">
+              <MapPin size={18} />
               {safe.destination}
             </Badge>
-            <Badge variant="outline" className="px-4 py-2 text-base">
-              <Clock size={18} className="mr-2" />
+            <Badge variant="outline" className="px-4 py-2 flex gap-2 text-base">
+              <Clock size={18} />
               {safe.duration} Days
             </Badge>
-            <Badge variant="outline" className="px-4 py-2 text-base">
-              <IndianRupee size={18} className="mr-2" />
+            <Badge variant="outline" className="px-4 py-2 flex gap-2 text-base">
+              <IndianRupee size={18} />
               {safe.budget} Budget
             </Badge>
           </div>
@@ -228,7 +228,7 @@ export default function ResultsSection({ data }) {
         )}
 
         {/* HOTELS & RESTAURANTS SIDE BY SIDE */}
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-1 gap-8">
           {/* HOTELS */}
           {safe.hotels.length > 0 && (
             <motion.div
@@ -243,14 +243,14 @@ export default function ResultsSection({ data }) {
                 <h2 className="text-2xl font-bold">Hotel Recommendations</h2>
               </div>
 
-              <div className="space-y-4">
+              <div className="grid grid-cols-3 gap-4">
                 {safe.hotels.map((h, i) => (
                   <Card
                     key={i}
                     className="p-5 border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur hover:shadow-lg transition-shadow"
                   >
                     <div className="flex items-start justify-between ">
-                      <h3 className="font-semibold text-2xl">{h.name}</h3>
+                      <h3 className="font-semibold text-xl">{h.name}</h3>
                       <Badge variant="secondary" className="text-md">
                         {h.type}
                       </Badge>
@@ -281,6 +281,7 @@ export default function ResultsSection({ data }) {
             </motion.div>
           )}
 
+          
           {/* RESTAURANTS */}
           {safe.restaurants.length > 0 && (
             <motion.div
@@ -295,35 +296,35 @@ export default function ResultsSection({ data }) {
                 <h2 className="text-2xl font-bold">Best Restaurants</h2>
               </div>
 
-              <div className="space-y-4">
+              <div className="grid grid-cols-3 gap-4">
                 {safe.restaurants.map((r, i) => (
                   <Card
                     key={i}
                     className="p-5 border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur hover:shadow-lg transition-shadow"
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg">{r.name}</h3>
-                      <Badge variant="secondary" className="text-xs">
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-semibold text-xl">{r.name}</h3>
+                      <Badge variant="secondary" className="text-md">
                         {r.cuisine}
                       </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground flex items-center gap-2 mb-3">
-                      <MapPin size={14} />
+                    <p className="text-md text-muted-foreground flex items-center gap-2 ">
+                      <MapPin size={18} />
                       {r.location}
                     </p>
                     <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-1 text-sm">
-                        <Star size={14} className="fill-yellow-500 text-yellow-500" />
+                      <span className="flex items-center gap-2 text-md">
+                        <Star size={18} className="fill-yellow-500 text-yellow-500" />
                         {r.rating}
                       </span>
-                      <span className="font-bold text-accent flex items-center gap-1">
-                        <IndianRupee size={16} />
+                      <span className="font-bold text-md text-accent flex items-center gap-1">
+                        <IndianRupee size={18} />
                         {r.priceForTwo?.replace('₹', '')} for two
                       </span>
                     </div>
                     {r.mustTry && (
-                      <p className="text-xs text-muted-foreground mt-3 flex items-center gap-1">
-                        <ChefHat size={12} />
+                      <p className="text-md text-muted-foreground mt-3 flex items-center gap-2">
+                        <ChefHat size={18} />
                         Must try: {r.mustTry}
                       </p>
                     )}
@@ -370,7 +371,7 @@ export default function ResultsSection({ data }) {
                             className="h-2 bg-linear-to-r from-primary to-purple-600 rounded-full"
                           />
                         </div>
-                        <p className="text-xs text-muted-foreground mt-1">{p}% of total budget</p>
+                        <p className="text-xs text-muted-foreground mt-2">{p}% of total budget</p>
                       </div>
                     );
                   })}
@@ -429,9 +430,9 @@ export default function ResultsSection({ data }) {
           transition={{ delay: 0.6 }}
           className="text-center"
         >
-          <Button className="px-10 py-7 text-lg flex gap-3 mx-auto bg-linear-to-r from-primary to-purple-600 hover:shadow-2xl hover:shadow-primary/50 transition-all">
+          <Button className="px-10 py-7 text-white cursor-pointer text-lg flex gap-3 mx-auto bg-linear-to-r from-primary to-purple-600 hover:shadow-2xl hover:shadow-primary/50 transition-all">
             <Download size={22} />
-            Download Complete Travel Guide PDF
+            Download Travel Guide PDF
           </Button>
           <p className="text-sm text-muted-foreground mt-4">
             Includes booking links, maps, offline access & exclusive deals

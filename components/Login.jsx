@@ -5,10 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema } from "@/lib/schemas";
 import { motion } from 'framer-motion';
-import { supabase } from "@/lib/supabaseClient";
 import { MapPin, Mail, Lock } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
-import { Button } from "@/components/ui/button";
+
+
 import {
     Form,
     FormControl,
@@ -40,6 +41,8 @@ export default function LoginForm() {
         setError(null);
 
         try {
+            
+            const supabase = createClient();
             const { error } = await supabase.auth.signInWithPassword({
                 email: values.email,
                 password: values.password,
@@ -47,8 +50,9 @@ export default function LoginForm() {
 
             if (error) throw error;
 
-            router.push("/");
-            router.refresh();
+            // router.push("/");
+            // router.refresh();
+            window.location.href = '/';
         } catch (err) {
             setError(err.message || "Invalid email or password");
         } finally {
@@ -67,7 +71,7 @@ export default function LoginForm() {
 
                 <Link href="/" className="flex justify-center items-center gap-2 hover:opacity-80 transition-opacity">
                     <MapPin className="w-6 h-6 text-accent" />
-                    <span className="font-bold text-2xl text-foreground">TripPlanner AI</span>
+                    <span className="font-bold text-2xl text-foreground">Tripinit</span>
                 </Link>
 
                 <CardHeader className="text-center space-y-1">

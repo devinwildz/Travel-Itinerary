@@ -5,7 +5,7 @@ export default function UserLayout({ children }) {
     return (
         <>
             <Navbar />
-            <main className="content ">
+            <main className="content " >
                 {children}
             </main>
 

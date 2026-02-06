@@ -2,6 +2,8 @@
 
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -15,6 +17,8 @@ import { generateItinerary } from '@/app/actions/generate-itinerary';
 export default function ItineraryForm({ onSubmit }) {
 
   const { user } = useAuth();
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
@@ -28,6 +32,10 @@ export default function ItineraryForm({ onSubmit }) {
     e.preventDefault();
     if (!formData.destination || !formData.duration) return;
 
+    if (!user) {
+      router.push('/login');
+      return;
+    }
     setIsLoading(true);
     setError(null);
 
@@ -37,7 +45,7 @@ export default function ItineraryForm({ onSubmit }) {
 
         // Save to Supabase
         if (user) {
-          const { error } = await supabase.from("trips").insert({
+          const { data, error } = await supabase.from("trips").insert({
             user_id: user.id,
             title: `${formData.destination} Trip`,
             destination: formData.destination,
@@ -45,14 +53,20 @@ export default function ItineraryForm({ onSubmit }) {
             budget: formData.budget,
             travel_type: formData.travelType,
             ai_data: result.data, // JSON
-          });
+          }).select().single();
+
+          if (data?.id) {
+            onSubmit(data.id);
+          }
+
+
 
           if (error) {
             console.error("Trip save error:", error);
           }
         }
 
-        onSubmit(result.data);
+        // onSubmit(result.data);
       } else {
         setError(result.error || 'Failed to generate itinerary');
       }
@@ -68,9 +82,9 @@ export default function ItineraryForm({ onSubmit }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="flex justify-center"
+      className="flex justify-center p-10"
     >
-      <Card className="w-full max-w-2xl border-border/50 bg-linear-to-br from-card to-slate-900/50 backdrop-blur-xl shadow-2xl">
+      <Card className="w-full max-w-2xl py-0 border-border/50 bg-linear-to-br from-card to-slate-900/50 backdrop-blur-xl shadow-2xl">
         <form onSubmit={handleSubmit} className="p-8 md:p-12">
           <h2 className="text-2xl font-bold mb-8 text-foreground">Create Your Itinerary</h2>
 

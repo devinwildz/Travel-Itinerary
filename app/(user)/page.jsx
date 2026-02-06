@@ -1,9 +1,20 @@
+"use client"
 import HeroSection from '@/components/hero-section';
+import ItineraryForm from '@/components/itinerary-form';
+import { useRouter } from 'next/navigation';
+
 
 export default function Home() {
 
+  const router = useRouter();
+
+  const handleTripCreated = (tripId) => {
+    if (!tripId) return;
+    router.push(`/trip/${tripId}`);
+  };
+
   return (
-    <main className="relative bg-linear-to-br from-background via-background to-slate-900">
+    <main className="relative min-h-screen bg-linear-to-br from-background via-background to-slate-900">
       {/* Grid background effect */}
       <div className="absolute inset-0 -z-10 opacity-30">
         <div
@@ -23,6 +34,8 @@ export default function Home() {
       </div>
 
       <HeroSection />
+
+      <ItineraryForm onSubmit={handleTripCreated} />
 
     </main>
   );

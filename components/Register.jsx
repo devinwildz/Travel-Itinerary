@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema } from "@/lib/schemas";
 import { motion } from 'framer-motion';
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
+
 import { MapPin, Mail, Lock } from "lucide-react";
 
 import {
@@ -39,6 +40,8 @@ export default function RegisterForm() {
         setError(null);
 
         try {
+            const supabase = createClient();
+
             const { error: signUpError } = await supabase.auth.signUp({
                 email: values.email,
                 password: values.password,
@@ -56,14 +59,18 @@ export default function RegisterForm() {
 
             if (signInError) throw signInError;
 
-            router.push("/");
-            router.refresh();
+            console.log('✅ REGISTER SUCCESS');
+
+            // Hard reload to refresh cookies
+            window.location.href = '/';
+
         } catch (err) {
             setError(err.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
     }
+
 
     return (
         <>
@@ -77,7 +84,7 @@ export default function RegisterForm() {
 
                     <Link href="/" className="flex justify-center items-center gap-2 hover:opacity-80 transition-opacity">
                         <MapPin className="w-6 h-6 text-accent" />
-                        <span className="font-bold text-2xl text-foreground">TripPlanner AI</span>
+                        <span className="font-bold text-2xl text-foreground">Tripinit</span>
                     </Link>
 
                     <CardHeader className="text-center space-y-1">

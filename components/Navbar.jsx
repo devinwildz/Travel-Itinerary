@@ -1,6 +1,4 @@
 "use client";
-
-import Link from "next/link";
 import { cn } from "@/lib/utils"
 import { usePathname } from 'next/navigation';
 import { MapPin } from "lucide-react";
@@ -11,10 +9,11 @@ import {
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { LogOut } from "lucide-react";
+import Link from "next/link";
+
 
 const Navbar = () => {
     const { user, signOut } = useAuth();
@@ -22,11 +21,7 @@ const Navbar = () => {
         { href: '/', label: 'Home' },
         { href: '/about', label: 'About Us' },
         { href: '/contact', label: "Contact" },
-
-        ...(user ? [
-            { href: '/my-trips', label: 'My Trips' },
-            { href: '/trip-planner', label: 'Trip Planner' },
-        ] : []),
+        { href: '/packages', label: "Packages" },
     ]
     const pathname = usePathname();
     const isActive = (href) => pathname === href;
@@ -38,7 +33,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <MapPin className="w-6 h-6 text-accent" />
-                    <span className="font-bold text-lg text-foreground">TripPlanner AI</span>
+                    <span className="font-bold text-lg text-foreground">Tripinit</span>
                 </Link>
 
                 {/* Desktop Menu */}
@@ -78,18 +73,21 @@ const Navbar = () => {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem>My Trips</DropdownMenuItem>
-                                        <DropdownMenuLabel>Logout</DropdownMenuLabel>
+                                        <DropdownMenuItem>
+                                            <Link href="/my-trips">
+                                                My Trips
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            onClick={signOut}
+                                            className="cursor-pointer"
+                                        >
+                                            <LogOut className="w-4 h-4 " />
+                                            Logout
+                                        </DropdownMenuItem>
                                     </DropdownMenuGroup>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-
-                            <Button
-                                onClick={signOut}
-                                className="bg-red-600 hover:bg-red-500 text-white px-4 py-1 rounded-lg"
-                            >
-                                Logout
-                            </Button>
                         </>
                     ) : (
                         <>
