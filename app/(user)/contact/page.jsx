@@ -10,7 +10,7 @@ export default function ContactPage() {
     const contactInfo = [
         {
             icon: Mail,
-            label: 'Email',
+            label: 'Our Email',
             value: 'infotripinit@gmail.com',
             description: 'We reply within 24 hours',
         },
