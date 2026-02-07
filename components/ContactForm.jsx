@@ -45,7 +45,7 @@ export default function ContactForm() {
     };
 
     return (
-        <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur p-8 md:p-12">
+        <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur px-4 py-8 md:px-12 md:py-12">
 
             <div className="flex items-center gap-3 mb-8">
                 <MessageSquare className="w-6 h-6 text-accent" />

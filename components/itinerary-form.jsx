@@ -82,11 +82,11 @@ export default function ItineraryForm({ onSubmit }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="flex justify-center p-10"
+      className="flex justify-center p-6 md:p-10"
     >
       <Card className="w-full max-w-2xl py-0 border-border/50 bg-linear-to-br from-card to-slate-900/50 backdrop-blur-xl shadow-2xl">
-        <form onSubmit={handleSubmit} className="p-8 md:p-12">
-          <h2 className="text-2xl font-bold mb-8 text-foreground">Create Your Itinerary</h2>
+        <form onSubmit={handleSubmit} className="px-4 py-8 md:p-12">
+          <h2 className="text-2xl text-center md:text-left font-bold mb-8 text-foreground">Create Your Itinerary</h2>
 
           {error && (
             <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/50 flex items-start gap-3">
@@ -128,7 +128,7 @@ export default function ItineraryForm({ onSubmit }) {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-2 gap-6 mb-8">
             {/* Budget */}
             <div>
               <Label htmlFor="budget" className="text-foreground mb-2 flex items-center gap-2">

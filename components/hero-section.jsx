@@ -5,7 +5,7 @@ import { Sparkles } from 'lucide-react';
 
 export default function HeroSection() {
   return (
-    <section className="relative py-20 ">
+    <section className="relative py-20 px-6 md:px-0 ">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -28,7 +28,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+          className="text-4xl md:text-7xl font-bold mb-6 leading-tight"
         >
           <span className="bg-linear-to-r from-white via-accent to-purple-400 bg-clip-text text-transparent">
             Plan Your Trip with AI in Seconds

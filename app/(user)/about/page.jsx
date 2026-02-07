@@ -57,7 +57,7 @@ export default function AboutPage() {
                     transition={{ duration: 0.6, delay: 0.1 }}
                     className="mb-16"
                 >
-                    <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur p-8 md:p-12">
+                    <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur p-6 md:p-12">
                         <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
                         <p className="text-lg text-muted-foreground leading-relaxed mb-4">
                             We believe travel should be effortless and personalized. Tripinit AI empowers travelers to explore the world with confidence by providing intelligent, data-driven itineraries that match their unique preferences and budget.
@@ -110,8 +110,8 @@ export default function AboutPage() {
                     transition={{ duration: 0.6, delay: 0.3 }}
                     className="mb-16"
                 >
-                    <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur p-8 md:p-12">
-                        <h2 className="text-3xl font-bold text-foreground mb-8 text-center">How It Works</h2>
+                    <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur p-8 md:p-6 lg:p-12">
+                        <h2 className="text-3xl font-bold text-foreground mb-4 lg:mb-8 text-center">How It Works</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[
                                 {
@@ -153,7 +153,7 @@ export default function AboutPage() {
                         Ready to plan your next adventure?
                     </p>
                     <Link
-                        href="/trip-planner"
+                        href="/"
                         className="inline-block px-6 py-3 rounded-lg bg-linear-to-r from-primary to-purple-600  text-white font-semibold hover:shadow-lg hover:shadow-primary/50 transition-all"
                     >
                         Start Planning Now

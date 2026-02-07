@@ -106,7 +106,7 @@ export default function PackagesPage() {
 
 
     return (
-        <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-900 py-12 md:py-20 px-4">
+        <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-900 py-12 md:py-20 px-6">
 
             {/* Background Grid */}
             <div className="fixed inset-0 -z-10 opacity-20">
@@ -141,7 +141,7 @@ export default function PackagesPage() {
                             <Plane className="w-40 h-40 text-accent absolute top-1/2 right-8 -translate-y-1/2" />
                         </div>
 
-                        <div className="p-8 md:p-12 relative z-10">
+                        <div className="p-4 md:p-12 relative z-10">
                             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                                 Explore Our{' '}
                                 <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">

@@ -41,10 +41,10 @@ export default function TripCard({ trip, onDelete }) {
             transition={{ duration: 0.3 }}
         >
             <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur overflow-hidden hover:border-accent/50 transition-all cursor-pointer group">
-                <div className="p-6">
+                <div className="p-4">
                     <div className="flex justify-between items-start gap-4 mb-4">
                         <div className="flex-1" onClick={handleCardClick}>
-                            <h3 className="text-xl font-semibold text-foreground group-hover:text-accent transition-colors mb-2">
+                            <h3 className="text-xl capitalize font-semibold text-foreground group-hover:text-accent transition-colors mb-2">
                                 {trip.destination || trip.title}
                             </h3>
                             <p className="text-sm text-muted-foreground line-clamp-2">
@@ -64,13 +64,13 @@ export default function TripCard({ trip, onDelete }) {
                         </Button>
                     </div>
 
-                    <div onClick={handleCardClick} className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border/30">
+                    <div onClick={handleCardClick} className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-border/30">
                         {trip.destination && (
                             <div className="flex items-center gap-2">
                                 <MapPin className="w-4 h-4 text-accent shrink-0" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">Location</p>
-                                    <p className="text-sm font-medium text-foreground">{trip.destination}</p>
+                                    <p className="text-sm font-medium capitalize text-foreground">{trip.destination}</p>
                                 </div>
                             </div>
                         )}

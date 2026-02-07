@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Download,
   MapPin,
@@ -26,23 +26,23 @@ import {
   Lightbulb,
   ArrowRight,
   IndianRupee,
-} from 'lucide-react';
-import Image from 'next/image';
-import useTravelImages from '@/hooks/useTravelImages';
+} from "lucide-react";
+import Image from "next/image";
+import useTravelImages from "@/hooks/useTravelImages";
 
 // Helpers
-const parseCost = (str = '') => parseInt(str.replace(/\D/g, '')) || 0;
+const parseCost = (str = "") => parseInt(str.replace(/\D/g, "")) || 0;
 const percent = (v, t) => (t ? Math.round((v / t) * 100) : 0);
 
 const getTimeIcon = (time) => {
-  if (time?.toLowerCase().includes('morning')) return Sun;
-  if (time?.toLowerCase().includes('evening')) return Sunset;
+  if (time?.toLowerCase().includes("morning")) return Sun;
+  if (time?.toLowerCase().includes("evening")) return Sunset;
   return Moon;
 };
 
 export default function ResultsSection({ data }) {
   const images = useTravelImages(data?.destination);
-  console.log(images)
+  console.log(images);
 
   const safe = {
     ...data,
@@ -86,6 +86,13 @@ export default function ResultsSection({ data }) {
               {safe.budget} Budget
             </Badge>
           </div>
+
+          <div className="border border-accent/30 max-w-4xl mx-auto p-4 lg:p-8 text-accent rounded-xl bg-accent/5 backdrop-blur-sm">
+            Note: This itinerary is AI-generated and based on estimated data.
+            Prices for hotels, activities, and transport are assumed and may
+            change depending on availability, season, and real-time market
+            conditions. Please verify final prices before booking.
+          </div>
         </motion.div>
 
         {/* GALLERY */}
@@ -102,7 +109,7 @@ export default function ResultsSection({ data }) {
               <h2 className="text-3xl font-bold">Destination Gallery</h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {images.slice(0, 6).map((img, i) => (
                 <motion.div
                   key={i}
@@ -153,9 +160,13 @@ export default function ResultsSection({ data }) {
                     <Card className="p-6 hover:shadow-xl transition-shadow border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur h-full">
                       <div className="flex items-start gap-3 mb-3">
                         <Landmark size={20} className="text-accent mt-1" />
-                        <h3 className="font-semibold text-lg flex-1">{p.name}</h3>
+                        <h3 className="font-semibold text-lg flex-1">
+                          {p.name}
+                        </h3>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-4">{p.whyVisit}</p>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {p.whyVisit}
+                      </p>
                       <div className="flex flex-col items-start gap-2 justify-between text-sm">
                         <span className="flex items-center gap-2 text-accent">
                           <Ticket size={16} />
@@ -199,10 +210,14 @@ export default function ResultsSection({ data }) {
                   <Card className="p-6 border-border/50 gap-5 bg-linear-to-r from-card to-slate-900/30 backdrop-blur">
                     <div className="flex items-start gap-4 ">
                       <div className="w-12 h-12 rounded-lg bg-linear-to-br from-primary to-purple-600 flex items-center justify-center shrink-0">
-                        <span className="font-bold text-white text-lg">D{d.day}</span>
+                        <span className="font-bold text-white text-lg">
+                          D{d.day}
+                        </span>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-xl">{d.title || `Day ${d.day}`}</h3>
+                        <h3 className="font-semibold text-xl">
+                          {d.title || `Day ${d.day}`}
+                        </h3>
                         {d.estimatedCost && (
                           <p className="text-sm text-accent mt-2 flex items-center gap-1">
                             <IndianRupee size={14} />
@@ -215,8 +230,13 @@ export default function ResultsSection({ data }) {
                     <ul className="space-y-3 ml-16">
                       {(d.plan || []).map((activity, j) => (
                         <li key={j} className="flex items-start gap-3 text-sm">
-                          <ArrowRight size={16} className="text-accent mt-0.5 shrink-0" />
-                          <span className="text-muted-foreground">{activity}</span>
+                          <ArrowRight
+                            size={16}
+                            className="text-accent mt-0.5 shrink-0"
+                          />
+                          <span className="text-muted-foreground">
+                            {activity}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -243,7 +263,7 @@ export default function ResultsSection({ data }) {
                 <h2 className="text-2xl font-bold">Hotel Recommendations</h2>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {safe.hotels.map((h, i) => (
                   <Card
                     key={i}
@@ -261,12 +281,15 @@ export default function ResultsSection({ data }) {
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-md">
-                        <Star size={18} className="fill-yellow-500 text-yellow-500" />
+                        <Star
+                          size={18}
+                          className="fill-yellow-500 text-yellow-500"
+                        />
                         {h.rating}
                       </span>
                       <span className="font-bold text-md text-accent flex items-center gap-2">
                         <IndianRupee size={18} />
-                        {h.pricePerNight?.replace('₹', '')} / night
+                        {h.pricePerNight?.replace("₹", "")} / night
                       </span>
                     </div>
                     {h.amenities && (
@@ -281,7 +304,6 @@ export default function ResultsSection({ data }) {
             </motion.div>
           )}
 
-          
           {/* RESTAURANTS */}
           {safe.restaurants.length > 0 && (
             <motion.div
@@ -296,7 +318,7 @@ export default function ResultsSection({ data }) {
                 <h2 className="text-2xl font-bold">Best Restaurants</h2>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {safe.restaurants.map((r, i) => (
                   <Card
                     key={i}
@@ -314,12 +336,15 @@ export default function ResultsSection({ data }) {
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-md">
-                        <Star size={18} className="fill-yellow-500 text-yellow-500" />
+                        <Star
+                          size={18}
+                          className="fill-yellow-500 text-yellow-500"
+                        />
                         {r.rating}
                       </span>
                       <span className="font-bold text-md text-accent flex items-center gap-1">
                         <IndianRupee size={18} />
-                        {r.priceForTwo?.replace('₹', '')} for two
+                        {r.priceForTwo?.replace("₹", "")} for two
                       </span>
                     </div>
                     {r.mustTry && (
@@ -353,35 +378,45 @@ export default function ResultsSection({ data }) {
 
               <Card className="p-6 border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur">
                 <div className="space-y-5">
-                  {['accommodation', 'food', 'activities', 'transport'].map((key) => {
-                    const v = parseCost(safe.costBreakdown[key]);
-                    const t = parseCost(safe.costBreakdown.total);
-                    const p = percent(v, t);
-                    return (
-                      <div key={key}>
-                        <div className="flex justify-between text-sm mb-2">
-                          <span className="capitalize font-medium">{key}</span>
-                          <span className="text-accent font-semibold">{safe.costBreakdown[key]}</span>
+                  {["accommodation", "food", "activities", "transport"].map(
+                    (key) => {
+                      const v = parseCost(safe.costBreakdown[key]);
+                      const t = parseCost(safe.costBreakdown.total);
+                      const p = percent(v, t);
+                      return (
+                        <div key={key}>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span className="capitalize font-medium">
+                              {key}
+                            </span>
+                            <span className="text-accent font-semibold">
+                              {safe.costBreakdown[key]}
+                            </span>
+                          </div>
+                          <div className="h-2 bg-border rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${p}%` }}
+                              transition={{ duration: 1, delay: 0.5 }}
+                              className="h-2 bg-linear-to-r from-primary to-purple-600 rounded-full"
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-2">
+                            {p}% of total budget
+                          </p>
                         </div>
-                        <div className="h-2 bg-border rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${p}%` }}
-                            transition={{ duration: 1, delay: 0.5 }}
-                            className="h-2 bg-linear-to-r from-primary to-purple-600 rounded-full"
-                          />
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2">{p}% of total budget</p>
-                      </div>
-                    );
-                  })}
+                      );
+                    },
+                  )}
                 </div>
                 <div className="mt-6 pt-6 border-t border-border/50">
                   <div className="flex justify-between items-center">
-                    <span className="font-semibold text-lg">Total Estimated Cost</span>
+                    <span className="font-semibold text-lg">
+                      Total Estimated Cost
+                    </span>
                     <span className="text-3xl font-bold text-accent flex items-center gap-1">
                       <IndianRupee size={24} />
-                      {safe.costBreakdown.total?.replace('₹', '')}
+                      {safe.costBreakdown.total?.replace("₹", "")}
                     </span>
                   </div>
                 </div>
@@ -413,7 +448,10 @@ export default function ResultsSection({ data }) {
                       transition={{ delay: 0.5 + i * 0.1 }}
                       className="flex gap-3 text-sm"
                     >
-                      <ArrowRight size={16} className="text-accent shrink-0 mt-0.5" />
+                      <ArrowRight
+                        size={16}
+                        className="text-accent shrink-0 mt-0.5"
+                      />
                       <span className="text-muted-foreground">{tip}</span>
                     </motion.li>
                   ))}

@@ -29,7 +29,7 @@ export default function ContactPage() {
     ];
 
     return (
-        <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-900 py-12 md:py-20 px-4">
+        <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-900 py-12 md:py-20 px-6">
 
             <div className="max-w-6xl mx-auto">
 
@@ -46,7 +46,7 @@ export default function ContactPage() {
                 </motion.div>
 
                 {/* Contact Info */}
-                <div className="grid lg:grid-cols-3 gap-8 mb-12">
+                <div className="grid md:grid-cols-3 gap-8 mb-12">
                     {contactInfo.map((info, index) => {
                         const Icon = info.icon;
 
