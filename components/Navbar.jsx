@@ -135,6 +135,26 @@ const Navbar = () => {
                 </SheetDescription>
               </VisuallyHidden>
               <div className="flex flex-col px-4 gap-6 mt-12">
+                {/* Navigation Links */}
+                <div className="flex flex-col gap-2">
+                  {navlinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        "px-4 py-3 rounded-md text-sm font-medium transition-colors",
+                        {
+                          "bg-accent/10 text-accent": isActive(link.href),
+                          "text-foreground/70 hover:text-foreground hover:bg-accent/5":
+                            !isActive(link.href),
+                        },
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
                 {/* Auth Section */}
                 <div className="border-t border-slate-600 pt-6 flex flex-col gap-3">
                   {user ? (
@@ -186,26 +206,6 @@ const Navbar = () => {
                       </Link>
                     </>
                   )}
-                </div>
-                {/* Navigation Links */}
-                <div className="flex flex-col gap-2">
-                  {navlinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        "px-4 py-3 rounded-md text-sm font-medium transition-colors",
-                        {
-                          "bg-accent/10 text-accent": isActive(link.href),
-                          "text-foreground/70 hover:text-foreground hover:bg-accent/5":
-                            !isActive(link.href),
-                        },
-                      )}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
                 </div>
               </div>
             </SheetContent>
