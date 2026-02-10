@@ -14,18 +14,8 @@ export default function ContactPage() {
             value: 'infotripinit@gmail.com',
             description: 'We reply within 24 hours',
         },
-        {
-            icon: Phone,
-            label: 'Phone',
-            value: '+91 98080 15801',
-            description: 'Monday to Friday, 9AM-6PM',
-        },
-        {
-            icon: MapPin,
-            label: 'Location',
-            value: '123 Travel Street',
-            description: 'San Francisco, CA 94105',
-        },
+        
+        
     ];
 
     return (
@@ -46,7 +36,7 @@ export default function ContactPage() {
                 </motion.div>
 
                 {/* Contact Info */}
-                <div className="grid md:grid-cols-3 gap-8 mb-12">
+                <div className="grid md:grid-cols-1 gap-8 mb-12">
                     {contactInfo.map((info, index) => {
                         const Icon = info.icon;
 
