@@ -51,7 +51,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                 throw new Error(result.error || 'Failed to send inquiry');
             }
 
-            console.log('✅ Email sent:', result);
+            
             setSubmitted(true);
 
             setTimeout(() => {
@@ -61,7 +61,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
             }, 2000);
 
         } catch (err) {
-            console.error('❌ Error:', err);
+            
             setError(err.message || 'Failed to send inquiry');
         } finally {
             setIsSubmitting(false);
@@ -111,7 +111,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                 <button
                                     onClick={handleClose}
                                     disabled={isSubmitting}
-                                    className="p-1 hover:bg-accent/10 cursor-pointer rounded-lg"
+                                    className="p-1 hover:bg-primary/10 cursor-pointer rounded-lg"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -134,7 +134,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                         {/* Name */}
                                         <div>
                                             <Label className="mb-2 flex items-center gap-2">
-                                                <User className="w-4 h-4 text-accent" />
+                                                <User className="w-4 h-4 text-primary" />
                                                 Full Name
                                             </Label>
 
@@ -144,7 +144,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                             />
 
                                             {errors.name && (
-                                                <p className="text-red-500 text-xs mt-1">
+                                                <p className="text-destructive text-xs mt-1">
                                                     {errors.name.message}
                                                 </p>
                                             )}
@@ -153,7 +153,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                         {/* Email */}
                                         <div>
                                             <Label className="mb-2 flex items-center gap-2">
-                                                <Mail className="w-4 h-4 text-accent" />
+                                                <Mail className="w-4 h-4 text-primary" />
                                                 Email
                                             </Label>
 
@@ -163,7 +163,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                             />
 
                                             {errors.email && (
-                                                <p className="text-red-500 text-xs mt-1">
+                                                <p className="text-destructive text-xs mt-1">
                                                     {errors.email.message}
                                                 </p>
                                             )}
@@ -172,7 +172,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                         {/* Phone */}
                                         <div>
                                             <Label className="mb-2 flex items-center gap-2">
-                                                <Phone className="w-4 h-4 text-accent" />
+                                                <Phone className="w-4 h-4 text-primary" />
                                                 Phone
                                             </Label>
 
@@ -182,7 +182,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                             />
 
                                             {errors.phone && (
-                                                <p className="text-red-500 text-xs mt-1">
+                                                <p className="text-destructive text-xs mt-1">
                                                     {errors.phone.message}
                                                 </p>
                                             )}
@@ -191,18 +191,19 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                         {/* Message */}
                                         <div>
                                             <Label className="mb-2 flex items-center gap-2">
-                                                <MessageSquare className="w-4 h-4 text-accent" />
+                                                <MessageSquare className="w-4 h-4 text-primary" />
                                                 Message
                                             </Label>
 
                                             <textarea
                                                 {...register("message")}
                                                 rows={3}
-                                                className="w-full px-3 py-2 rounded-lg bg-input border border-border/50 text-sm resize-none"
+                                                placeholder='Type your message here'
+                                                className="w-full px-3 py-2 rounded-lg shadow-sm border border-border/50 text-sm resize-none"
                                             />
 
                                             {errors.message && (
-                                                <p className="text-red-500 text-xs mt-1">
+                                                <p className="text-destructive text-xs mt-1">
                                                     {errors.message.message}
                                                 </p>
                                             )}
@@ -214,7 +215,7 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
                                             whileTap={{ scale: 0.98 }}
                                             type="submit"
                                             disabled={isSubmitting}
-                                            className="w-full py-2 rounded-lg bg-linear-to-r from-primary to-purple-600 text-white cursor-pointer font-semibold text-sm"
+                                            className="w-full py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-white cursor-pointer font-semibold text-sm"
                                         >
                                             {isSubmitting ? "Sending..." : "Send Inquiry"}
                                         </motion.button>

@@ -19,7 +19,7 @@ export default function ContactPage() {
     ];
 
     return (
-        <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-900 py-12 md:py-20 px-6">
+        <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/10 py-12 md:py-20 px-6">
 
             <div className="max-w-6xl mx-auto">
 
@@ -42,7 +42,7 @@ export default function ContactPage() {
 
                         return (
                             <Card key={index} className="p-6 text-center">
-                                <Icon className="mx-auto mb-3 text-accent" />
+                                <Icon className="mx-auto mb-3 text-primary" />
                                 <h3 className="font-semibold">{info.label}</h3>
                                 <p>{info.value}</p>
                                 <p className="text-sm text-muted-foreground">

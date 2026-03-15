@@ -17,10 +17,10 @@ export default function HeroSection() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/5 backdrop-blur-sm"
+          className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm"
         >
-          <Sparkles className="w-4 h-4 text-accent" />
-          <span className="text-sm text-accent font-medium">AI-Powered Travel Planning</span>
+          <Sparkles className="w-4 h-4 text-primary" />
+          <span className="text-sm text-primary font-medium">AI-Powered Travel Planning</span>
         </motion.div>
 
         {/* Main headline with gradient */}
@@ -30,7 +30,7 @@ export default function HeroSection() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-4xl md:text-7xl font-bold mb-6 leading-tight"
         >
-          <span className="bg-linear-to-r from-white via-accent to-purple-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary via-sky-400 to-accent bg-clip-text text-transparent">
             Plan Your Trip with AI in Seconds
           </span>
         </motion.h1>
@@ -50,7 +50,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="inline-block px-6 py-2 rounded-lg border border-accent/20 bg-accent/5 backdrop-blur-sm text-sm text-accent/80"
+          className="inline-block px-6 py-2 rounded-lg border border-primary/20 bg-primary/5 backdrop-blur-sm text-sm text-primary/80"
         >
           No credit card required. Get your itinerary instantly.
         </motion.div>

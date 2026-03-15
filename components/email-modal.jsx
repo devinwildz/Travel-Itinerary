@@ -48,7 +48,7 @@ export default function EmailModal({ open, onOpenChange }) {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-md"
           >
-            <div className="relative bg-linear-to-br from-card to-slate-900/50 border border-border/50 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden">
+            <div className="relative bg-card border border-border/50 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden">
               {/* Close button */}
               <button
                 onClick={() => onOpenChange(false)}
@@ -83,14 +83,14 @@ export default function EmailModal({ open, onOpenChange }) {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-accent"
+                            className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
                           />
                         </div>
 
                         <Button
                           type="submit"
                           disabled={isLoading || !email}
-                          className="w-full bg-linear-to-r from-primary to-purple-600 text-primary-foreground font-semibold hover:shadow-lg hover:shadow-primary/50 disabled:opacity-50"
+                          className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold hover:shadow-lg hover:shadow-primary/50 disabled:opacity-50"
                         >
                           {isLoading ? (
                             <>
@@ -127,7 +127,7 @@ export default function EmailModal({ open, onOpenChange }) {
                       <p className="text-muted-foreground mb-4">
                         Check your inbox for your premium itinerary PDF and exclusive travel deals.
                       </p>
-                      <p className="text-sm text-accent">Your adventure awaits! ✈️</p>
+                      <p className="text-sm text-primary">Your adventure awaits! ✈️</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

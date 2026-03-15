@@ -106,7 +106,7 @@ export default function PackagesPage() {
 
 
     return (
-        <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-900 py-12 md:py-20 px-6">
+        <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/10 py-12 md:py-20 px-6">
 
             {/* Background Grid */}
             <div className="fixed inset-0 -z-10 opacity-20">
@@ -138,7 +138,7 @@ export default function PackagesPage() {
                     <Card className="border-border/50 bg-linear-to-r from-primary/20 via-accent/20 to-purple-600/20 backdrop-blur overflow-hidden relative">
 
                         <div className="absolute inset-0 opacity-30">
-                            <Plane className="w-40 h-40 text-accent absolute top-1/2 right-8 -translate-y-1/2" />
+                            <Plane className="w-40 h-40 text-primary absolute top-1/2 right-8 -translate-y-1/2" />
                         </div>
 
                         <div className="p-4 md:p-12 relative z-10">

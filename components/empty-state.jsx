@@ -22,10 +22,10 @@ export function EmptyState({ icon = 'MapPin', title, description, actionLabel, a
             transition={{ duration: 0.6 }}
             className="flex justify-center items-center pt-10"
         >
-            <Card className="w-full max-w-md border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur p-12 text-center">
+            <Card className="w-full max-w-md border-border/50 bg-gradient-to-br from-card to-primary/5 backdrop-blur p-12 text-center">
                 <div className="flex justify-center ">
-                    <div className="p-4 rounded-lg bg-accent/10">
-                        <IconComponent className="w-8 h-8 text-accent" />
+                    <div className="p-4 rounded-lg bg-primary/10">
+                        <IconComponent className="w-8 h-8 text-primary" />
                     </div>
                 </div>
 
@@ -35,7 +35,7 @@ export function EmptyState({ icon = 'MapPin', title, description, actionLabel, a
                 {actionHref && actionLabel && (
                     <Link
                         href={actionHref}
-                        className="inline-block cursor-pointer px-6 py-2 rounded-lg bg-linear-to-r from-primary to-purple-600 text-slate-300 font-semibold hover:shadow-lg hover:shadow-primary/50 transition-all"
+                        className="inline-block cursor-pointer px-6 py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-white font-semibold hover:shadow-lg hover:shadow-primary/50 transition-all"
                     >
                         {actionLabel}
                     </Link>

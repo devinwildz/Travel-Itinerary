@@ -65,20 +65,22 @@ export default function LoginForm() {
       transition={{ duration: 0.5 }}
       className="w-full max-w-md"
     >
-      <Card className="w-full max-w-md border bg-linear-to-br from-card to-slate-900/30 backdrop-blur shadow-xl">
+      <Card className="w-full border border-border/50 bg-gradient-to-br from-card to-primary/5 backdrop-blur shadow-xl">
         <Link
           href="/"
           className="flex justify-center items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <MapPin className="w-6 h-6 text-accent" />
+          <MapPin className="w-6 h-6 text-primary" />
           <span className="font-bold text-2xl text-foreground">Tripinit</span>
         </Link>
 
         <CardHeader className="text-center space-y-1">
-          <CardTitle className="text-xl font-bold text-white">
+          <CardTitle className="text-xl font-bold text-foreground">
             Welcome back
           </CardTitle>
-          <p className="text-sm text-zinc-400">Sign in to your account</p>
+          <p className="text-sm text-muted-foreground">
+            Sign in to your account
+          </p>
         </CardHeader>
 
         <CardContent>
@@ -89,9 +91,9 @@ export default function LoginForm() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem >
-                    <FormLabel className="text-zinc-300">
-                      <Mail className="w-4 h-4 text-accent" />
+                  <FormItem>
+                    <FormLabel className="text-muted-foreground">
+                      <Mail className="w-4 h-4 text-primary" />
                       Email
                     </FormLabel>
                     <FormControl>
@@ -99,7 +101,7 @@ export default function LoginForm() {
                         type="email"
                         placeholder="you@example.com"
                         autoComplete="email"
-                        className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-accent"
+                        className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
                         {...field}
                       />
                     </FormControl>
@@ -115,8 +117,8 @@ export default function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="relative">
-                    <FormLabel className="text-zinc-300">
-                      <Lock className="w-4 h-4 text-accent" />
+                    <FormLabel className="text-muted-foreground">
+                      <Lock className="w-4 h-4 text-primary" />
                       Password
                     </FormLabel>
                     <FormControl>
@@ -124,14 +126,14 @@ export default function LoginForm() {
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         autoComplete="current-password"
-                        className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-accent"
+                        className="bg-input relative border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
                         {...field}
                       />
                     </FormControl>
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-10 -translate-y-1/2 text-zinc-400 hover:text-white"
+                      className="absolute right-3 top-10 -translate-y-1/2 text-muted-foreground hover:text-primary"
                     >
                       {showPassword ? (
                         <EyeOff className="w-5 h-5" />
@@ -146,7 +148,7 @@ export default function LoginForm() {
 
               {/* Error */}
               {error && (
-                <p className="text-sm text-red-400 bg-red-950/40 p-2 rounded-md">
+                <p className="text-sm text-destructive bg-destructive/10 p-2 rounded-md">
                   {error}
                 </p>
               )}
@@ -157,7 +159,7 @@ export default function LoginForm() {
                 whileTap={{ scale: 0.98 }}
                 disabled={loading}
                 type="submit"
-                className="w-full cursor-pointer py-2 px-6 rounded-lg font-semibold bg-linear-to-r from-primary to-purple-600 hover:shadow-lg hover:shadow-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-slate-300 duration-200 mt-4"
+                className="w-full cursor-pointer py-2 px-6 rounded-lg font-semibold bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 mt-4"
               >
                 {loading ? "Signing in..." : "Sign In"}
               </motion.button>
@@ -168,7 +170,7 @@ export default function LoginForm() {
               Don’t have an account?{" "}
               <Link
                 href="/register"
-                className="text-accent hover:underline font-semibold"
+                className="text-primary hover:underline font-semibold"
               >
                 Sign up here
               </Link>
