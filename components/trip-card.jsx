@@ -58,7 +58,7 @@ export default function TripCard({ trip, onDelete }) {
                             }}
                             size="sm"
                             variant="ghost"
-                            className="text-destructive cursor-pointer hover:bg-destructive/10"
+                            className="text-destructive cursor-pointer hover:!bg-destructive/10"
                         >
                             <Trash2 className="w-4 h-4 text-red-500 " />
                         </Button>

@@ -33,13 +33,13 @@ const Footer = () => {
                 <span>infotripinit@gmail.com</span>
               </a>
 
-              <a
+              {/* <a
                 href="tel:+911234567890"
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <Phone size={15} />
                 <span>+91 (123) 456-7890</span>
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -47,16 +47,23 @@ const Footer = () => {
           <div>
             <h4 className="text-xl font-bold mb-6 text-foreground">Menus</h4>
             <ul className="space-y-3">
-              {["Home", "About us", "Packages", "Contact"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-muted-foreground hover:text-primary hover:translate-x-1 inline-block transition-all"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+              {["Home", "About", "Contact", "Packages"].map((item) => {
+                const path =
+                  item === "Home"
+                    ? "/"
+                    : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+
+                return (
+                  <li key={item}>
+                    <a
+                      href={path}
+                      className="text-muted-foreground hover:text-primary hover:translate-x-1 inline-block transition-all"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -66,24 +73,28 @@ const Footer = () => {
               Resources
             </h4>
             <ul className="space-y-3">
-              {["Contact", "Blog", "Privacy Policy", "Terms of Services"].map(
-                (item) => (
+              {["Blog", "Privacy Policy", "Terms of Services"].map((item) => {
+                const path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+
+                return (
                   <li key={item}>
                     <a
-                      href="#"
+                      href={path}
                       className="text-muted-foreground hover:text-primary hover:translate-x-1 inline-block transition-all"
                     >
                       {item}
                     </a>
                   </li>
-                ),
-              )}
+                );
+              })}
             </ul>
           </div>
 
           {/* Social */}
           <div>
-            <h4 className="text-xl font-bold mb-6 text-foreground">Socials</h4>
+            <h4 className="text-xl font-bold mb-6 text-foreground">
+              Connect With Us
+            </h4>
             <ul className="space-y-3">
               {["Instagram", "Twitter", "Youtube"].map((item) => (
                 <li key={item}>
@@ -102,14 +113,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="text-center text-muted-foreground text-sm border-t border-border pt-6">
           <p>
-            © 2026 Tripinit. All rights reserved. |{" "}
-            <a href="#" className="hover:text-primary transition-colors">
-              Privacy Policy
-            </a>{" "}
-            |{" "}
-            <a href="#" className="hover:text-primary transition-colors">
-              Terms of Service
-            </a>
+            © 2026 Tripinit. All rights reserved.
           </p>
         </div>
       </div>

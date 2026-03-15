@@ -62,19 +62,19 @@ function PackageCard({ pkg, index, onInquiry }) {
           <div className="space-y-2 mb-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-primary" />
-              {pkg.duration}
+              {pkg.duration} Days
             </div>
 
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4 text-primary" />
-              {pkg.groupSize || pkg.group_size}
+              {pkg.groupSize || pkg.group_size} People
             </div>
           </div>
 
           {/* Price + Button */}
           <div className="flex items-center justify-between pt-4 border-t border-border/50">
             <div className="text-xl font-bold text-primary flex items-center gap-1">
-              {pkg.price}
+              ₹{pkg.price}
             </div>
 
             <motion.button
