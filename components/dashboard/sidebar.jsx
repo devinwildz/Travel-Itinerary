@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
@@ -37,6 +37,7 @@ export default function DashboardSidebar() {
   const { user, signOut } = useAuth();
   const { state, isMobile } = useSidebar();
   const isCollapsed = state === "collapsed" && !isMobile;
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   useEffect(() => {
     navItems.concat(accountItems).forEach((item) => {
@@ -123,10 +124,23 @@ export default function DashboardSidebar() {
         <Button
           variant="ghost"
           className="justify-start bg-destructive/10 cursor-pointer text-destructive hover:!bg-destructive/10 hover:text-destructive"
-          onClick={() => signOut()}
+          disabled={isSigningOut}
+          onClick={async () => {
+            if (isSigningOut) return;
+            setIsSigningOut(true);
+            try {
+              await signOut();
+            } finally {
+              router.push("/login");
+              router.refresh();
+              setIsSigningOut(false);
+            }
+          }}
         >
           <LogOut className="w-4 h-4" />
-          {!isCollapsed && <span>Sign out</span>}
+          {!isCollapsed && (
+            <span>{isSigningOut ? "Signing out..." : "Sign out"}</span>
+          )}
         </Button>
       </SidebarFooter>
     </Sidebar>
