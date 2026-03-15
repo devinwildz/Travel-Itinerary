@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { memo, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -40,19 +41,21 @@ const getTimeIcon = (time) => {
   return Moon;
 };
 
-export default function ResultsSection({ data }) {
+function ResultsSection({ data }) {
   const images = useTravelImages(data?.destination);
-  console.log(images);
 
-  const safe = {
-    ...data,
-    days: data?.days || [],
-    topPlaces: data?.topPlaces || [],
-    hotels: data?.hotels || [],
-    restaurants: data?.restaurants || [],
-    tips: data?.tips || [],
-    costBreakdown: data?.costBreakdown || {},
-  };
+  const safe = useMemo(
+    () => ({
+      ...data,
+      days: data?.days || [],
+      topPlaces: data?.topPlaces || [],
+      hotels: data?.hotels || [],
+      restaurants: data?.restaurants || [],
+      tips: data?.tips || [],
+      costBreakdown: data?.costBreakdown || {},
+    }),
+    [data]
+  );
 
   return (
     <section className="min-h-screen py-16 px-4 bg-gradient-to-br from-background via-background to-primary/10">
@@ -480,3 +483,5 @@ export default function ResultsSection({ data }) {
     </section>
   );
 }
+
+export default memo(ResultsSection);

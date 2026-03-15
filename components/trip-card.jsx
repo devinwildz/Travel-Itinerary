@@ -40,11 +40,11 @@ export default function TripCard({ trip, onDelete }) {
             whileHover={{ y: -4 }}
             transition={{ duration: 0.3 }}
         >
-            <Card className="border-border/50 bg-linear-to-br from-card to-slate-900/30 backdrop-blur overflow-hidden hover:border-accent/50 transition-all cursor-pointer group">
+            <Card className="border-border/50 bg-card backdrop-blur overflow-hidden hover:border-primary/50 transition-all cursor-pointer group">
                 <div className="p-4">
                     <div className="flex justify-between items-start gap-4 mb-4">
                         <div className="flex-1" onClick={handleCardClick}>
-                            <h3 className="text-xl capitalize font-semibold text-foreground group-hover:text-accent transition-colors mb-2">
+                            <h3 className="text-xl capitalize font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
                                 {trip.destination || trip.title}
                             </h3>
                             <p className="text-sm text-muted-foreground line-clamp-2">
@@ -58,16 +58,16 @@ export default function TripCard({ trip, onDelete }) {
                             }}
                             size="sm"
                             variant="ghost"
-                            className="text-destructive hover:bg-destructive/10"
+                            className="text-destructive cursor-pointer hover:bg-destructive/10"
                         >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-4 h-4 text-red-500 " />
                         </Button>
                     </div>
 
                     <div onClick={handleCardClick} className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-border/30">
                         {trip.destination && (
                             <div className="flex items-center gap-2">
-                                <MapPin className="w-4 h-4 text-accent shrink-0" />
+                                <MapPin className="w-4 h-4 text-primary shrink-0" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">Location</p>
                                     <p className="text-sm font-medium capitalize text-foreground">{trip.destination}</p>
@@ -77,7 +77,7 @@ export default function TripCard({ trip, onDelete }) {
 
                         {trip.duration && (
                             <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-accent shrink-0" />
+                                <Calendar className="w-4 h-4 text-primary shrink-0" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">Duration</p>
                                     <p className="text-sm font-medium text-foreground">{trip.duration} days</p>
@@ -87,7 +87,7 @@ export default function TripCard({ trip, onDelete }) {
 
                         {trip.budget && (
                             <div className="flex items-center gap-2">
-                                <DollarSign className="w-4 h-4 text-accent shrink-0" />
+                                <DollarSign className="w-4 h-4 text-primary shrink-0" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">Budget</p>
                                     <p className="text-sm font-medium text-foreground capitalize">{trip.budget}</p>
@@ -97,7 +97,7 @@ export default function TripCard({ trip, onDelete }) {
 
                         {trip.travel_type && (
                             <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-accent shrink-0" />
+                                <Mail className="w-4 h-4 text-primary shrink-0" />
                                 <div>
                                     <p className="text-xs text-muted-foreground">Type</p>
                                     <p className="text-sm font-medium text-foreground capitalize">{trip.travel_type}</p>

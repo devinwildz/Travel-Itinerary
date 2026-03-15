@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,12 +32,142 @@ export default function ItineraryForm({ onSubmit }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSuggesting, setIsSuggesting] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeSuggestion, setActiveSuggestion] = useState(-1);
+  const suggestionAbortRef = useRef(null);
+  const suggestionTimerRef = useRef(null);
   const [formData, setFormData] = useState({
     destination: "",
     duration: "",
     budget: "medium",
     travelType: "solo",
   });
+
+  useEffect(() => {
+    const query = formData.destination.trim();
+    if (!query) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      setActiveSuggestion(-1);
+      if (suggestionAbortRef.current) {
+        suggestionAbortRef.current.abort();
+        suggestionAbortRef.current = null;
+      }
+      if (suggestionTimerRef.current) {
+        clearTimeout(suggestionTimerRef.current);
+        suggestionTimerRef.current = null;
+      }
+      return undefined;
+    }
+
+    if (suggestionTimerRef.current) {
+      clearTimeout(suggestionTimerRef.current);
+    }
+
+    suggestionTimerRef.current = setTimeout(async () => {
+      if (suggestionAbortRef.current) {
+        suggestionAbortRef.current.abort();
+      }
+
+      const controller = new AbortController();
+      suggestionAbortRef.current = controller;
+      setIsSuggesting(true);
+
+      try {
+        const params = new URLSearchParams({
+          format: "json",
+          addressdetails: "1",
+          limit: "6",
+          countrycodes: "in",
+          q: query,
+        });
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?${params.toString()}`,
+          {
+            signal: controller.signal,
+            headers: {
+              "Accept-Language": "en",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch suggestions");
+        }
+
+        const data = await response.json();
+        const normalized = Array.isArray(data)
+          ? data.map((item) => ({
+              id: item.place_id,
+              label: item.display_name,
+              lat: item.lat,
+              lon: item.lon,
+            }))
+          : [];
+        setSuggestions(normalized);
+        setShowSuggestions(true);
+        setActiveSuggestion(-1);
+      } catch (err) {
+        if (err?.name !== "AbortError") {
+          setSuggestions([]);
+          setShowSuggestions(false);
+        }
+      } finally {
+        setIsSuggesting(false);
+      }
+    }, 350);
+
+    return () => {
+      if (suggestionTimerRef.current) {
+        clearTimeout(suggestionTimerRef.current);
+        suggestionTimerRef.current = null;
+      }
+    };
+  }, [formData.destination]);
+
+  useEffect(() => {
+    return () => {
+      if (suggestionAbortRef.current) {
+        suggestionAbortRef.current.abort();
+      }
+      if (suggestionTimerRef.current) {
+        clearTimeout(suggestionTimerRef.current);
+      }
+    };
+  }, []);
+
+  const applySuggestion = (suggestion) => {
+    if (!suggestion) return;
+    setFormData((prev) => ({ ...prev, destination: suggestion.label }));
+    setShowSuggestions(false);
+    setSuggestions([]);
+    setActiveSuggestion(-1);
+  };
+
+  const handleDestinationKeyDown = (event) => {
+    if (!showSuggestions || suggestions.length === 0) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveSuggestion((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : 0
+      );
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveSuggestion((prev) =>
+        prev > 0 ? prev - 1 : suggestions.length - 1
+      );
+    } else if (event.key === "Enter") {
+      if (activeSuggestion >= 0) {
+        event.preventDefault();
+        applySuggestion(suggestions[activeSuggestion]);
+      }
+    } else if (event.key === "Escape") {
+      setShowSuggestions(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,15 +248,67 @@ export default function ItineraryForm({ onSubmit }) {
               <MapPin className="w-4 h-4 text-primary" />
               Destination
             </Label>
-            <Input
-              id="destination"
-              placeholder="Enter your destination (e.g., Paris, Tokyo, New York)"
-              value={formData.destination}
-              onChange={(e) =>
-                setFormData({ ...formData, destination: e.target.value })
-              }
-              className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
-            />
+            <div className="relative">
+              <Input
+                id="destination"
+                placeholder="Enter your destination (e.g., Paris, Tokyo, New York)"
+                value={formData.destination}
+                onChange={(e) =>
+                  setFormData({ ...formData, destination: e.target.value })
+                }
+                onFocus={() => {
+                  if (suggestions.length > 0) setShowSuggestions(true);
+                }}
+                onBlur={() => {
+                  setTimeout(() => setShowSuggestions(false), 120);
+                }}
+                onKeyDown={handleDestinationKeyDown}
+                className="bg-input border-border/50 text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
+                autoComplete="off"
+                role="combobox"
+                aria-expanded={showSuggestions}
+                aria-controls="destination-suggestions"
+                aria-activedescendant={
+                  activeSuggestion >= 0
+                    ? `destination-suggestion-${activeSuggestion}`
+                    : undefined
+                }
+              />
+              {isSuggesting && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                  Searching...
+                </div>
+              )}
+              {showSuggestions && suggestions.length > 0 && (
+                <div
+                  id="destination-suggestions"
+                  className="absolute z-20 mt-2 w-full rounded-lg border border-border/60 bg-card/95 shadow-xl backdrop-blur-xl max-h-64 overflow-auto"
+                  role="listbox"
+                >
+                  {suggestions.map((suggestion, index) => (
+                    <button
+                      key={suggestion.id}
+                      id={`destination-suggestion-${index}`}
+                      type="button"
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                        applySuggestion(suggestion);
+                      }}
+                      onMouseEnter={() => setActiveSuggestion(index)}
+                      className={`w-full text-left px-3 py-2 text-sm transition-colors ${
+                        index === activeSuggestion
+                          ? "bg-primary/15 text-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                      }`}
+                      role="option"
+                      aria-selected={index === activeSuggestion}
+                    >
+                      {suggestion.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Trip Duration */}

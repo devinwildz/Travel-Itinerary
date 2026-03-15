@@ -1,30 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 export default function useTravelImages(destination) {
-  const [images, setImages] = useState([]);
+  const query = destination?.trim() || '';
 
-  useEffect(() => {
-    if (!destination) return;
-
-
-    async function fetchImages() {
-      try {
-        const res = await fetch(
-          `https://api.unsplash.com/search/photos?query=${destination}&per_page=6&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`
-        )
-        const data = await res.json()
-
-        console.log(data)
-
-        const urls = data.results.map(img => img.urls.regular)
-        setImages(urls)
-      } catch (err) {
-        console.error("Unsplash error", err)
+  const { data } = useQuery({
+    queryKey: ['travel-images', query.toLowerCase()],
+    enabled: Boolean(query),
+    queryFn: async () => {
+      const res = await fetch(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(
+          query
+        )}&per_page=6&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`
+      );
+      if (!res.ok) {
+        throw new Error('Failed to fetch images');
       }
-    }
-    fetchImages()
+      const data = await res.json();
+      return (data.results || []).map((img) => img.urls.regular);
+    },
+  });
 
-  }, [destination]);
-
-  return images;
+  return data || [];
 }

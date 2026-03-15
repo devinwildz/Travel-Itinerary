@@ -1,6 +1,8 @@
 'use server';
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { createHash } from 'crypto';
+import { createClient } from '@/lib/supabase/server';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -8,6 +10,43 @@ export async function generateItinerary(data) {
   try {
     if (!process.env.GEMINI_API_KEY) {
       throw new Error('GEMINI_API_KEY environment variable is not set');
+    }
+
+    const normalizedDestination = String(data.destination || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+    const normalizedDuration = String(data.duration || '').trim();
+    const normalizedBudget = String(data.budget || '').trim().toLowerCase();
+    const normalizedTravelType = String(data.travelType || '')
+      .trim()
+      .toLowerCase();
+
+    const cacheSeed = [
+      normalizedDestination,
+      normalizedDuration,
+      normalizedBudget,
+      normalizedTravelType,
+    ].join('|');
+    const cacheKey = createHash('sha256').update(cacheSeed).digest('hex');
+
+    try {
+      const supabase = await createClient();
+      const { data: cached, error: cacheError } = await supabase
+        .from('itinerary_cache')
+        .select('ai_data')
+        .eq('cache_key', cacheKey)
+        .maybeSingle();
+
+      if (!cacheError && cached?.ai_data) {
+        return {
+          success: true,
+          data: cached.ai_data,
+          cached: true,
+        };
+      }
+    } catch (cacheReadError) {
+      console.warn('[Cache] Read failed, continuing to generate.');
     }
 
     const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
@@ -108,15 +147,35 @@ IMPORTANT:
     content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     const itinerary = JSON.parse(content);
 
+    const responseData = {
+      ...itinerary,
+      destination: data.destination,
+      duration: data.duration,
+      budget: data.budget,
+      travelType: data.travelType,
+    };
+
+    try {
+      const supabase = await createClient();
+      await supabase.from('itinerary_cache').upsert(
+        {
+          cache_key: cacheKey,
+          ai_data: responseData,
+          destination: data.destination,
+          duration: data.duration,
+          budget: data.budget,
+          travel_type: data.travelType,
+        },
+        { onConflict: 'cache_key' }
+      );
+    } catch (cacheWriteError) {
+      console.warn('[Cache] Write failed, continuing without cache.');
+    }
+
     return {
       success: true,
-      data: {
-        ...itinerary,
-        destination: data.destination,
-        duration: data.duration,
-        budget: data.budget,
-        travelType: data.travelType,
-      },
+      data: responseData,
+      cached: false,
     };
   } catch (error) {
     console.error('[Gemini] Itinerary generation error:', error);

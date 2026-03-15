@@ -1,113 +1,53 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Plane } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import PackageCard from '@/components/PackageCard';
-import PackageInquiryModal from '@/components/PackageInquiryModal'
+import PackageInquiryModal from '@/components/PackageInquiryModal';
+import { supabase } from '@/lib/supabaseClient';
+import { useQuery } from '@tanstack/react-query';
 
 export default function PackagesPage() {
     const [selectedPackage, setSelectedPackage] = useState(null);
     const [inquiryOpen, setInquiryOpen] = useState(false);
 
-    const packages = [
-        {
-            id: 1,
-            name: 'Andaman Tour',
-            destination: 'Andaman & Nicobar Island',
-            duration: '7 Days',
-            groupSize: '4-6 people',
-            price: '₹1,299',
-            rating: 4.8,
-            reviews: 234,
-            description:
-                `The Andaman Islands are an Indian archipelago in the Bay of Bengal. These roughly 300 islands are known for their palm-lined, white-sand beaches, mangroves, and tropical rainforests.`,
-            highlights: ['Cellular Jail National Memorial', 'Rajiv Gandhi Water Sports Complex', 'North Bay Beach', 'Water sports'],
-            image: 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20',
+    const { data: packages = [], isLoading } = useQuery({
+        queryKey: ['packages'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('packages')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                throw error;
+            }
+
+            return data || [];
         },
-        {
-            id: 2,
-            name: 'Kerela Tour',
-            destination: 'Kerela',
-            duration: '10 Days',
-            groupSize: '6-8 people',
-            price: '₹1,899',
-            rating: 4.9,
-            reviews: 456,
-            description:
-                `Kerala, a state on India's tropical Malabar Coast, has nearly 600 km of Arabian Sea shoreline. This is famous for houseboats, palm-lined beaches, and backwaters.`,
-            highlights: ['Alleppey', 'Kochi,', 'Munnar', 'Kovalam'],
-            image: 'bg-gradient-to-br from-purple-500/20 to-pink-500/20',
-        },
-        {
-            id: 3,
-            name: 'Shimla & Manali Tour',
-            destination: 'Himachal Pradesh',
-            duration: '8 Days',
-            groupSize: '3-5 people',
-            price: '₹1,599',
-            rating: 4.7,
-            reviews: 189,
-            description:
-                `Shimla & Manali are two popular tourist destinations in Himachal Pradesh. You can enjoy your winter and summer vacation with the family on Shimla and Manali trip.`,
-            highlights: ['The Ridge', ' Kufri', 'Manikaran Gurudwara', 'Jogini Waterfall '],
-            image: 'bg-gradient-to-br from-green-500/20 to-blue-500/20',
-        },
-        {
-            id: 4,
-            name: 'Goa Tour',
-            destination: 'Goa, India',
-            duration: '5 Days',
-            groupSize: '2-4 people',
-            price: '₹899',
-            rating: 4.6,
-            reviews: 312,
-            description:
-                `Goa is a state in western India with coastlines stretching along the Arabian Sea. Goa is famous for its fantastic beaches and its culture, you will feel the totally different culture in goa`,
-            highlights: ['Fontainhas,', 'Reis Magos Fort,', 'Candolim Beach', 'Beaches'],
-            image: 'bg-gradient-to-br from-orange-500/20 to-yellow-500/20',
-        },
-        {
-            id: 5,
-            name: 'Jaipur Tour',
-            destination: 'Rajasthan',
-            duration: '9 Days',
-            groupSize: '4-7 people',
-            price: '₹1,699',
-            rating: 4.9,
-            reviews: 523,
-            description:
-                `Jaipur is the capital of India’s Rajasthan state.Jaipur, popularly known as the Pink City of India, The city is the mixture and combination of Indian culture and modern experiences.`,
-            highlights: ['City Palace', 'Albert Hall Museum', 'Nahargarh Fort', 'Galta Ji'],
-            image: 'bg-gradient-to-br from-blue-500/20 to-purple-500/20',
-        },
-        {
-            id: 6,
-            name: 'Udaipur Tour',
-            destination: 'Rajasthan',
-            duration: '10 Days',
-            groupSize: '6-10 people',
-            price: '₹2,299',
-            rating: 4.8,
-            reviews: 267,
-            description:
-                `Udaipur, formerly the capital of the Mewar Kingdom, is a city in the western Indian state of Rajasthan. Udaipur is well known for handicrafts such as paintings, marble articles, silver arts and terracotta.`,
-            highlights: ['City Palace', 'Lake Garden Palace', 'Bagore Ki Haveli', 'Vintage Car Museum'],
-            image: 'bg-gradient-to-br from-amber-500/20 to-orange-500/20',
-        },
-        
-    ];
+        staleTime: 1000 * 60 * 10,
+        refetchOnWindowFocus: false,
+    });
+
+    const normalizedPackages = useMemo(
+        () =>
+            packages.map((pkg) => ({
+                ...pkg,
+                groupSize: pkg.group_size ?? pkg.groupSize,
+                image: pkg.image_class ?? pkg.image,
+            })),
+        [packages]
+    );
 
     const handleInquiry = useCallback((packageData) => {
         setSelectedPackage(packageData);
         setInquiryOpen(true);
     }, []);
 
-
     return (
         <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/10 py-12 md:py-20 px-6">
-
             {/* Background Grid */}
             <div className="fixed inset-0 -z-10 opacity-20">
                 <div
@@ -127,7 +67,6 @@ export default function PackagesPage() {
             </div>
 
             <div className="max-w-7xl mx-auto">
-
                 {/* Banner */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -136,7 +75,6 @@ export default function PackagesPage() {
                     className="mb-16"
                 >
                     <Card className="border-border/50 bg-linear-to-r from-primary/20 via-accent/20 to-purple-600/20 backdrop-blur overflow-hidden relative">
-
                         <div className="absolute inset-0 opacity-30">
                             <Plane className="w-40 h-40 text-primary absolute top-1/2 right-8 -translate-y-1/2" />
                         </div>
@@ -160,14 +98,21 @@ export default function PackagesPage() {
 
                 {/* Packages Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                    {packages.map((pkg, index) => (
-                        <PackageCard
-                            key={pkg.id}
-                            pkg={pkg}
-                            index={index}
-                            onInquiry={handleInquiry}
-                        />
-                    ))}
+                    {isLoading
+                        ? Array.from({ length: 6 }).map((_, i) => (
+                              <div
+                                  key={i}
+                                  className="h-80 rounded-xl bg-muted animate-pulse"
+                              />
+                          ))
+                        : normalizedPackages.map((pkg, index) => (
+                              <PackageCard
+                                  key={pkg.id}
+                                  pkg={pkg}
+                                  index={index}
+                                  onInquiry={handleInquiry}
+                              />
+                          ))}
                 </div>
             </div>
 

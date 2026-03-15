@@ -1,42 +1,35 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/context/AuthContext';
 import ResultsSection from '@/components/results-section';
 import EmailModal from '@/components/email-modal';
+import { useQuery } from '@tanstack/react-query';
 
 export default function TripDetailsPage() {
     const { id: tripId } = useParams();
     const router = useRouter();
     const { user } = useAuth();
 
-    const [itineraryData, setItineraryData] = useState(null);
     const [showEmailModal, setShowEmailModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (!user) {
             router.push('/login');
             return;
         }
-
-        if (tripId) {
-            loadSavedTrip(tripId);
-        }
     }, [tripId, user]);
 
-    const loadSavedTrip = async (id) => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['trip', tripId, user?.id],
+        enabled: Boolean(tripId && user?.id),
+        queryFn: async () => {
             const { data, error } = await supabase
                 .from('trips')
                 .select('ai_data')
-                .eq('id', id)
+                .eq('id', tripId)
                 .eq('user_id', user.id)
                 .single();
 
@@ -44,16 +37,26 @@ export default function TripDetailsPage() {
                 throw new Error('Access denied');
             }
 
-            setItineraryData(data.ai_data);
+            return data.ai_data;
+        },
+        staleTime: 1000 * 60 * 10,
+        refetchOnWindowFocus: false,
+    });
 
-            // 🔥 UI ONLY — open modal after result loads
-            setTimeout(() => setShowEmailModal(true), 800);
-        } catch (err) {
-            setError('You are not allowed to view this trip');
-        } finally {
-            setIsLoading(false);
+    const itineraryData = data ?? null;
+
+    useEffect(() => {
+        if (!itineraryData || !tripId) return;
+        if (typeof window === 'undefined') return;
+
+        const shouldOpen = sessionStorage.getItem('openEmailModalTripId');
+        if (shouldOpen === tripId) {
+            sessionStorage.removeItem('openEmailModalTripId');
+            const timer = setTimeout(() => setShowEmailModal(true), 800);
+            return () => clearTimeout(timer);
         }
-    };
+        return undefined;
+    }, [itineraryData, tripId]);
 
     if (isLoading) {
         return (

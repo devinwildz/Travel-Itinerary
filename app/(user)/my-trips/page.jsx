@@ -1,38 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import TripCard from '@/components/trip-card';
 import { EmptyState } from '@/components/empty-state';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/context/AuthContext';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function MyTripsContent() {
   const { user } = useAuth();
-  const [trips, setTrips] = useState([]);
   const [selectedTrip, setSelectedTrip] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const queryClient = useQueryClient();
 
-  // ✅ Fetch trips from DB
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchTrips = async () => {
-      setLoading(true);
-
+  const { data: trips = [], isLoading: loading } = useQuery({
+    queryKey: ['trips', user?.id],
+    enabled: Boolean(user?.id),
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('trips')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error) setTrips(data);
-      setLoading(false);
-    };
-
-    fetchTrips();
-  }, [user]);
+      if (error) {
+        throw error;
+      }
+      return data || [];
+    },
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 
   const handleSelectTrip = (trip) => {
     setSelectedTrip(trip);
@@ -46,7 +45,9 @@ export default function MyTripsContent() {
     const { error } = await supabase.from('trips').delete().eq('id', tripId);
 
     if (!error) {
-      setTrips(trips.filter((trip) => trip.id !== tripId));
+      queryClient.setQueryData(['trips', user?.id], (prev = []) =>
+        prev.filter((trip) => trip.id !== tripId)
+      );
       if (selectedTrip?.id === tripId) {
         setIsDetailsOpen(false);
         setSelectedTrip(null);
@@ -89,7 +90,7 @@ export default function MyTripsContent() {
             title="No trips yet"
             description="Start planning your next adventure by creating a new trip itinerary."
             actionLabel="Create Trip"
-            actionHref="/trip-planner"
+            actionHref="/"
           />
         ) : (
           <motion.div

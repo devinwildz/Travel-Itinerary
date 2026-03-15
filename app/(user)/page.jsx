@@ -8,6 +8,9 @@ export default function Home() {
 
   const handleTripCreated = (tripId) => {
     if (!tripId) return;
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("openEmailModalTripId", tripId);
+    }
     router.push(`/trip/${tripId}`);
   };
 
