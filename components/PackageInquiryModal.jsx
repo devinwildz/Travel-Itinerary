@@ -53,12 +53,9 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
 
             
             setSubmitted(true);
-
-            setTimeout(() => {
-                reset();
-                setSubmitted(false);
-                onOpenChange(false);
-            }, 2000);
+            reset();
+            onOpenChange(false);
+            setSubmitted(false);
 
         } catch (err) {
             
@@ -119,6 +116,12 @@ export default function PackageInquiryModal({ open, onOpenChange, packageName })
 
                             {/* Content */}
                             <div className="p-6">
+
+                                {error && (
+                                    <div className="mb-4 rounded-lg border border-destructive/50 bg-destructive/10 p-3 text-sm text-destructive">
+                                        {error}
+                                    </div>
+                                )}
 
                                 {submitted ? (
                                     <div className="text-center py-6">
